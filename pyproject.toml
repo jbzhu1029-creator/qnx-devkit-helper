@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qnxdoctor"
+version = "0.1.0"
+description = "Host-side doctor for QNX SDP 8.0 Makefile projects"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "jbzhu1029-creator" }]
+keywords = ["qnx", "sdp", "neutrino", "qcc", "makefile"]
+classifiers = [
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Build Tools",
+]
+
+[project.scripts]
+qnxdoctor = "qnxdoctor.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/jbzhu1029-creator/qnx-devkit-helper"
+
+[tool.setuptools.packages.find]
+include = ["qnxdoctor*"]
