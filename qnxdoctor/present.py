@@ -70,8 +70,17 @@ def render_text(report: Report, *, color: bool = False, quiet: bool = False) -> 
             lines.extend(_format_note(note, paint))
         lines.append("")
 
+    # Repeat errors after the long Passed list so they stay on screen.
+    errors = [note for note in shown if note.severity == "error"]
+    if errors:
+        lines.append(paint("Errors", bold=True))
+        for note in errors:
+            lines.extend(_format_note(note, paint, include_help=False))
+        lines.append("")
+
     lines.append(
         "Summary: "
+        + f"{report.status}, mode {report.mode}, "
         + ", ".join(
             (
                 _plural(counts["error"], "error", "errors"),
@@ -141,7 +150,7 @@ def _plural(count: int, singular: str, plural: str) -> str:
     return f"{count} {singular if count == 1 else plural}"
 
 
-def _format_note(note: Note, paint) -> list[str]:
+def _format_note(note: Note, paint, *, include_help: bool = True) -> list[str]:
     label = LABELS.get(note.severity, note.severity.upper())
     where = ""
     if note.path and note.line:
@@ -159,7 +168,7 @@ def _format_note(note: Note, paint) -> list[str]:
         )
         or ["       " + note.message]
     )
-    if note.help:
+    if include_help and note.help:
         lines.extend(_wrap_help(note.help))
     return lines
 
