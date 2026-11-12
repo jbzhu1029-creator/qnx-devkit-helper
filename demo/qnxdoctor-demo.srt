@@ -1,0 +1,154 @@
+1
+00:00:00,200 --> 00:00:04,488
+qnxdoctor checks a QNX SDP 8.0 Makefile from
+the host.
+
+2
+00:00:04,488 --> 00:00:08,775
+This demo uses the bundled examples and a
+fake toolchain.
+
+3
+00:00:08,775 --> 00:00:11,776
+No board, no QEMU, and no SDP.
+
+4
+00:00:14,200 --> 00:00:18,687
+Version prints 0.1.0, the same string as the
+report header.
+
+5
+00:00:22,200 --> 00:00:24,697
+The demo command runs all three examples.
+
+6
+00:00:24,697 --> 00:00:29,334
+hello-sdp8 and plain-aarch64 pass in
+degraded mode: the files are fine, and a
+
+7
+00:00:29,334 --> 00:00:31,475
+missing qcc is only a warning.
+
+8
+00:00:31,475 --> 00:00:33,258
+broken-port is the expected failure.
+
+9
+00:00:33,258 --> 00:00:35,399
+The demo command still exits 0.
+
+10
+00:00:35,399 --> 00:00:37,896
+It is a gallery, not a gate.
+
+11
+00:00:46,200 --> 00:00:48,569
+Diagnosing broken-port directly exits 1.
+
+12
+00:00:48,569 --> 00:00:53,306
+The recap at the bottom is the part to read.
+
+13
+00:00:53,306 --> 00:00:58,518
+common.mk forces gcc, passes march native,
+and still points at qnx710.
+
+14
+00:00:58,518 --> 00:00:59,939
+qtargets.mk is missing.
+
+15
+00:00:59,939 --> 00:01:05,624
+nto-armv7-o-le is not an SDP 8.0 CPU, and
+nto-aarch64-o-be asks for big-endian.
+
+16
+00:01:05,624 --> 00:01:11,783
+net.c includes a Linux header and epoll, and
+it calls socket without libsocket.
+
+17
+00:01:11,783 --> 00:01:16,047
+The shell script and the workflow never
+source qnxsdp-env.sh.
+
+18
+00:01:18,200 --> 00:01:25,060
+Sourcing demo/mock-env.sh builds a fake SDP
+tree: qcc and q++ stubs, plus qconfig.mk,
+
+19
+00:01:25,060 --> 00:01:26,643
+qtargets.mk, and recurse.mk.
+
+20
+00:01:26,643 --> 00:01:29,809
+The stub is not a compiler.
+
+21
+00:01:30,200 --> 00:01:34,119
+The same hello project is now mode ready.
+
+22
+00:01:34,119 --> 00:01:40,488
+QNX_HOST and QNX_TARGET resolve, PATH finds
+the stub qcc, and qcc -V reports
+
+23
+00:01:40,488 --> 00:01:41,958
+gcc_ntoaarch64le and gcc_ntox86_64.
+
+24
+00:01:41,958 --> 00:01:46,858
+The project checks are unchanged, so the run
+still passes.
+
+25
+00:01:46,858 --> 00:01:49,797
+This is not a Neutrino boot.
+
+26
+00:01:50,200 --> 00:01:53,003
+With --require-sdp, those missing-toolchain
+warnings become errors.
+
+27
+00:01:53,003 --> 00:01:56,607
+hello-sdp8 now fails, even though the
+Makefiles are clean.
+
+28
+00:01:56,607 --> 00:02:01,413
+Use that flag on a build job that must have
+the SDK.
+
+29
+00:02:04,200 --> 00:02:08,349
+JSON is the same report: status, mode,
+findings, and passed checks.
+
+30
+00:02:08,349 --> 00:02:11,366
+Scripts can read it without scraping the
+text.
+
+31
+00:02:16,200 --> 00:02:18,517
+Warnings do not fail the process.
+
+32
+00:02:18,517 --> 00:02:19,289
+Errors do.
+
+33
+00:02:19,289 --> 00:02:22,378
+qnxdoctor reads files and does not run
+recipes.
+
+34
+00:02:22,378 --> 00:02:26,625
+It has not been tested on real SDP hardware
+or QEMU.
+
