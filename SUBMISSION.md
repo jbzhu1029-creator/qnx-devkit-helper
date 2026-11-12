@@ -36,6 +36,8 @@ Tests build a fake SDP tree (host `qcc` stub, sysroot include files, a banner th
 
 The faceless demo is `demo/run_demo.py`. `--check` is what CI runs. `--play` is the same commands on a clock of about two and a half minutes. `demo/narration.md` is the voiceover, timestamped to that clock. `demo/qnxdoctor.tape` is an optional VHS tape that types `--play`. The ready half of the session sources `demo/mock-env.sh`, whose `qcc` prints the two SDP 8.0 specs for `-V` and refuses every other invocation.
 
+`demo/qnxdoctor-demo.mp4` is that session already recorded, with a Piper voiceover of the narration and `demo/qnxdoctor-demo.srt` beside it. `bash demo/render_video.sh` regenerates both. The video was not captured on a board, a real `qcc`, or QEMU.
+
 ## Challenges
 
 SDP 8.0 reused the name "mk" for the include files, not for a compiler driver. Treating a missing `mk` binary as a failure would be wrong, so the doctor reports it as a note.
@@ -81,6 +83,6 @@ After that, the gaps that are already visible in the code:
 - GNU make, detected when it is on `PATH`. The file checks do not need it
 - QNX SDP 8.0 Programmer's Guide and Utilities Reference, as the spec the checks follow. The SDK is not linked, vendored, or required
 - GitHub Actions (Ubuntu) for the unit tests and `demo/run_demo.py --check`
-- Optional: [VHS](https://github.com/charmbracelet/vhs), only if someone wants a gif of `demo/qnxdoctor.tape`. CI does not install it
+- Optional: [VHS](https://github.com/charmbracelet/vhs), ttyd, ffmpeg, and [Piper](https://github.com/rhasspy/piper) (Lessac high) for `demo/qnxdoctor-demo.mp4`. CI does not install or run them
 
 Not used, and not claimed: a QNX license, a real `qcc`, QEMU, or a Neutrino board.

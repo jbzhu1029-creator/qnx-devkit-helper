@@ -114,7 +114,19 @@ python3 demo/run_demo.py --play
 
 The degraded half scrubs `QNX_*`, `MAKEFLAGS`, and host include leaks, and it passes `--no-discover`, so an SDP install on the machine does not change that half. The ready half sources `demo/mock-env.sh`, which builds `demo/.mock-sdp` (gitignored). The `qcc` there answers `qcc -V` with `gcc_ntoaarch64le` and `gcc_ntox86_64` and exits 1 for anything else. It is not a compiler.
 
-`demo/qnxdoctor.tape` is a [VHS](https://github.com/charmbracelet/vhs) tape that types the `--play` command. VHS is optional. CI does not install it. The gif it would write is gitignored.
+`demo/qnxdoctor.tape` is a [VHS](https://github.com/charmbracelet/vhs) tape that types the `--play` command. VHS is optional. CI does not install it. The gif it would write is gitignored. The narrated recording checked in for the submission is [demo/qnxdoctor-demo.mp4](demo/qnxdoctor-demo.mp4), with subtitles in [demo/qnxdoctor-demo.srt](demo/qnxdoctor-demo.srt).
+
+### Regenerating the demo video
+
+From the repository root:
+
+```sh
+bash demo/render_video.sh
+```
+
+The script records `demo/qnxdoctor.tape` at 1280×720 and mixes a [Piper](https://github.com/rhasspy/piper) voiceover of `demo/narration.md`. The voice is the offline Lessac high model (`en_US-lessac-high`). There is no microphone and no camera. It needs `ffmpeg` and Google Chrome or Chromium, because VHS draws the terminal in a headless browser. On Linux x86_64 it downloads VHS, ttyd, Piper, and the voice into `demo/.render/` when they are not already on `PATH`. `VHS`, `TTYD`, `PIPER`, and `PIPER_MODEL` override those paths. `demo/.render/` is gitignored.
+
+The voice starts when the `qnxdoctor faceless demo` banner appears, on the cue times in `demo/narration.md`. A few tokens are respelled only so the synthesizer says them as initials (`QEMU`, the variant directory names, the `qcc -V` spec names). The subtitles keep the original sentences. The picture is the mock toolchain from `demo/mock-env.sh`. It is not a recording of SDP 8.0, a real `qcc`, or QEMU.
 
 `--check` is pinned to x86_64 Linux with GNU make, which is the SDP 8.0 host GitHub Actions provides. On any other host the script exits 2 instead of pretending the transcript still matches.
 
@@ -335,7 +347,7 @@ QNX Everywhere also ships a quickstart image (`com.qnx.qnx800.quickstart.qemu`).
 ```text
 qnxdoctor/     CLI, environment checks, Makefile checks, text and JSON reports
 examples/      one clean mk project, one clean plain Makefile, one broken port
-demo/          scripted session, mock SDP stub, narration, optional VHS tape
+demo/          scripted session, mock SDP stub, narration, VHS tape, video
 tests/         unit tests, including the demo transcript
 ```
 

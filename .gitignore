@@ -6,5 +6,7 @@ dist/
 build/
 .pytest_cache/
 demo/.mock-sdp/
+demo/.render/
 demo/*.gif
 demo/*.cast
+demo/*.partial.mp4
